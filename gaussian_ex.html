@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="zh_TW.UTF-8">
+<title>Gaussian Examples</title>
+<link rel="stylesheet" href="./defaults.css" type="text/css">
+</head>
+
+<body>
+<h1>Gaussian Examples</h1>
+ <a href="#example_8"><li class="title">Example 8 - Transition State</li></a>
+
+<hr/>
+
+<a name="example_8"><h2>Example 8 - Transition State</h2>
+<p class="h2">
+	Predict the structure of the transition state for the following reaction: <br />
+	SiH<sub>4</sub> &rarr; SiH<sub>2</sub> + H<sub>2</sub> (Scan, TS, QST2, QST3) <br /><br />
+</p>
+
+<h3>Method 1 - Scan</h3>
+<p class="h3">
+	<b>(1)</b> 先計算 opt 及 freq 之 SiH<sub>4</sub>結構，作為 scan 的初始結構。<br />
+
+	<b>(2)</b> 因為要進行脫附反應，所以將兩個 H 原子 scan 至 H<sub>2</sub> 鍵結的距離，使之自動脫附，需在 input 檔 (.gjf) 中輸入 scan 的指令及參數，完整 gjf 檔如下所示：<br />
+
+	<div class="commands">
+	%chk=SiH4-s.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# hf/3-21g <span class="cmds">opt=(modred,maxcyc=20)</span> scfcyc=1000 <span class="cmds">nosymm</span><br /><br />
+	Title Card Required<br /><br />
+	0 1<br />
+	Si    0.00000000    0.00000000    0.00000000<br />
+	H     0.85832600    0.85832600    0.85832600<br />
+	H     -0.85832600   -0.85832600   0.85832600<br />
+	H     -0.85832600   0.85832600    -0.85832600<br />
+	H     0.85832600    -0.85832600   -0.85832600<br /><br />
+	<span class="cmds">2 3 s 17 -0.1</span><br /><br /><br />
+    </div><br />
+</p>
+<p class="h3">
+	<img src="./images/ex8/8-2.png"><br /><br />
+	
+	<div class="commands"><span class="cmts"># scan commands</span><br />
+	<span class="cmds">opt=(modred,maxcyc=20)</span><br />
+	modred:<br />
+	maxcycle:<br /><br />
+	<span class="cmts"># scan parameters</span><br />
+    <span class="cmds">2 3 s 17 -0.1</span><br />
+    以此題為例，要使兩個氫原子 scan 至氫分子鍵結，由於 SiH<sub>4</sub> 中 2 與 3 號兩個氫的距離為 2.42&Aring; 和氫分子的鍵長 0.74&Aring; 相差約 1.7&Aring; ，故選擇 2 與 3 號為要 scan 的原子，後面加 s 為做 scan 的指令，17 為 scan 的步數，-0.1 則為每次 scan -0.1&Aring; (因距離要越靠越近所以為負值)，其必為實數。<br />
+    註：需在 GaussView 中開啟 label 才可在原子上看到對應的標號。<br /><br />
+    scan 參數設定如下所示：<br />
+    scan distance:<br />
+    scan angle:<br />
+    scan dihedral angle:<br /><br />
+    <span class="cmts"># symmetry</span><br />
+	<span class="cmds">nosymm</span><br />
+ 	跑 scan 時，會打破結構對稱性，由於系統本身為對稱性結構，所以 scan 到某點時，job 會因須打破對稱性而無法完成 scan，因此需使用 nosymm (nosymmetry)。<br /><br />
+    </div><br />
+</p>
+<p class="h3">
+	<b>(3)</b> 打開 output 檔，選擇 Results 中的 Scan，下圖為 SiH<sub>4</sub> &rarr; SiH<sub>2</sub> + H<sub>2</sub> 脫附反應的 potential surface。<br />
+	<img src="./images/ex8/8-3.png"><br /><br />
+
+	<b>(4)</b> 由上圖中的 Scan of Total Energy，取最末點 (最右邊) 進行結構最佳化計算，就可得到產物的結構。<br/>
+	<img src="./images/ex8/8-4.png"><br /><br />
+
+	<b>(5)</b> 取其能量最高點進行 TS 的計算，可得到過渡態的結構；然後選擇 Result / Vibration，觀察其負頻的振動方向，來判斷此負頻為正確的過渡態結構。<br/>
+	<img src="./images/ex8/8-5.png"><br /><br /><br />
+
+	另外，也可利用 qst2 與 qst3 的方法求得過渡態結構，其做法先要有反應物、產物和過渡態之最佳化結構。<br />
+	<img src="./images/ex8/8-6.png"><br /><br />
+</p><br /><br />
+
+<h3>Method 2 - QST2</h3>
+<p class="h3">	
+	先介紹 qst2 方法，輸入 opt = qst2 的指令，並依序置入反應物及產物之最佳化結構，gjf檔如下，進行計算後即可得到下圖的結果。<br />
+	註：方法 qst2 中 2 意旨反應物及產物的兩個結構。<br />
+
+	<div class="commands">
+	%chk=SiH4-qst2.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# hf/3-21g <span class="cmds">opt=qst2</span> freq scfcyc=1000<br /><br />
+	reactant<br /><br />
+	0 1<br />
+	Si    0.000000    0.000000    0.000000<br />
+	H     0.848705    0.848705    0.848705<br />
+	H     -0.848705   0.848705    -0.848705<br />
+	H     0.848705    -0.848705   -0.848705<br />
+	H     -0.848705   -0.848705   0.848705<br /><br />
+	product<br /><br />
+	0 1<br />
+	Si    -0.326295   -0.000010   -0.117923<br />
+	H     2.423722    0.000069    0.334794<br />
+	H     2.358674    -0.000101   -0.490358<br />
+	H     -0.107155   -1.118954   0.903350<br />
+	H     -0.107117   1.119128    0.903130<br /><br /><br />
+    </div><br />
+</p>
+<p class="h3">
+	<img src="./images/ex8/8-7.png"><br />
+	<br /><br /><br />
+</p>
+
+<h3>Method 3 - QST3</h3>
+<p class="h3">
+	而 qst3 則輸入 opt=qst3 的指令，並依序置入反應物、產物和過渡態之最佳化結構，計算結果如下圖； qst3 方法為當前兩個方法無法實行，或是想要更精準的過渡態結構時，可使用之。<br />
+	註：方法 qst3 中 3 意旨反應物、產物及過渡態三個結構。
+
+	<div class="commands">
+	%chk=SiH4-qst3.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# hf/3-21g <span class="cmds">opt=qst3</span> freq scfcyc=1000<br /><br />
+	reactant<br /><br />
+	0 1<br />
+	Si    0.000000    0.000000    0.000000<br />
+	H     0.848705    0.848705    0.848705<br />
+	H     -0.848705   0.848705    -0.848705<br />
+	H     0.848705    -0.848705   -0.848705<br />
+	H     -0.848705   -0.848705   0.848705<br /><br />
+	product<br /><br />
+	0 1<br />
+	Si    -0.326295   -0.000010   -0.117923<br />
+	H     2.423722    0.000069    0.334794<br />
+	H     2.358674    -0.000101   -0.490358<br />
+	H     -0.107155   -1.118954   0.903350<br />
+	H     -0.107117   1.119128    0.903130<br /><br />
+	ts<br /><br />
+	0 1<br />
+	Si    -0.183989   -0.000012   -0.121730<br />
+	H     1.659511    0.000118    0.941022<br />
+	H     1.833888    -0.000101   -0.665189<br />
+	H     -0.458789   -1.215150   0.714323<br />
+	H     -0.458765   1.215307    0.714066<br /><br /><br />
+    </div><br />
+</p>
+<p class="h3">
+    <img src="./images/ex8/8-8.png"><br /><br />
+</p>
+
+<hr/>
+<h2>Changelog</h2>
+	<li class="changelog">2014/05/15 完成 Example 8</li>
+
+</body>
+</html>
