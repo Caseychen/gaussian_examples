@@ -32,19 +32,129 @@
 	Prediction the energy difference between the HOMO and LUMO of ethylene and formaldehyde.
 </p>
 
-<h3>Learning target: opt, read output</h3>
+<h3>Learning target: opt, read output</h3><br /><br />
 <p class="h3">
+	<b>(1)</b> 進入 Gaussview，分別將 ethylene 和 formaldehyde 建構出來，建成 ethylene.gjf 與 formaldehyde.gjf 檔。<br />
+	<img src="./images/ex1/1-1.png"><br /><br />
+	<b>(2)</b> 兩者的完整 gjf 檔分別如下，可對照下放圖示：<br />
+	
+	<div class="commands">
+	%chk=ethylene.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# <span class="cmds">opt freq</span> hf/3-21g<br /><br />
+	Title Card Required<br /><br />
+	0 1<br />
+	C    -2.49999996    -0.57377048    0.00000000<br />
+	H    -1.96683622    -1.50147540    0.00000000<br />
+	H    -3.56999996    -0.57377048    0.00000000<br />
+	C    -1.82472565    0.60120681    0.00000000<br />
+	H    -2.35788940    1.52891173    0.00000000<br />
+	H    -0.75472565    0.60120681    0.00000000<br /><br />
+	<br />
+	<hr/>
+	%chk=formaldehyde.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# <span class="cmds">opt freq</span> hf/3-21g<br /><br />
+	Title Card Required<br /><br />
+	0 1<br />
+	C    -0.81967212    -1.51639342    0.00000000<br />
+	H    -0.28650837    -2.44409834    0.00000000<br />
+	H    -1.88967212    -1.51639342    0.00000000<br />
+	O    -0.19263169    0.42534307    0.00000000<br /><br /><br />
+	</div>
+</p>
+<p class="h3">
+	<img src="./images/ex1/1-2.png"><br /><br />
 
+	<div class="commands"><span class="cmts">geometry optimization</span><br />
+	<span class="cmds"># opt</span><br />
+	對結構進行最佳化<br /><br />
+	<span class="cmts">frequency calculation</span><br />
+    <span class="cmds"># freq</span><br />
+    主要有三個目的 : <br />
+    1. 看是否有負頻的存在<br />
+    2. 可以顯現光譜<br />
+    3. 可求熱力學參數<br />
+    </div><br />
+</p>
+<p class="h3">
+    <b>(3)</b> 然後啟動 gaussian09，分別開啟檔案 ethylene.gjf 與 formaldehyde.gjf 檔，對其進行 opt 和 freq 計算。<br />
+    <b>(4)</b> 計算完成後，此時有兩種 read output 的方法可以取得 HOMO 及 LUMO 的能階資訊。<br /><br />
+</p>
+<h3>Method 1 - View File 文字檔</h3>
+<p class="h3">
+	啟動 Gaussview，分別打開 ethylene.log 和 formaldehyde.log 檔，在工具列 Results 選項中選擇 View File ，其中 Occupied 的最後一個軌域即為 HOMO，Virtual 的第一個軌域即為 LUMO，兩數值相減即為 Band Gap，單位為 hartree。<br /><br />
+	ethylene：<br />
+	<img src="./images/ex1/1-6.png"><br /><br />
+	formaldehyde：<br />
+	<img src="./images/ex1/1-7.png"><br /><br /><br />
+</p>
+<h3>Method 2 - Gaussview 圖形介面輸出</h3><br />
+<p class="h3">
+	啟動 Gaussview，分別打開 ethylene.log 和 formaldehyde.log 檔，在工具列 Edit 選項中選擇 MOs，即可從圖中得知，最低未填電子軌域即為 LUMO，最高佔據電子軌域即為 HUMO，相減即 Band Gap。<br /><br />
+	<img src="./images/ex1/1-9.png"><br />
+	 註：圖中淺綠色線為能階正負號的交界。<br /><br />
+</p>
+<p class="h3">
+	<b>(5)</b> 由以上計算可以得知：<br />
+	Ethylene 之 Band Gap = 0.18661 – ( -0.37969 ) = 0.56630 hartree<br />
+	Formaldehyde 之 Band Gap= 0.14744 – ( -0.43294 )= 0.58038 hartree<br />
+</p>
+<br />
 <hr/>
 
 <!--EX.2-->
 <a name="example_2"><h2>Example 2 - Geometry Optimization</h2>
 <p class="h2">
-	Run a geometry optimization for NH<sub>3</sub> with C<sub>3v</sub> symmetry. ( Z-matrix ＆ dummy atom )
-
+	Run a geometry optimization for NH<sub>3</sub> with C<sub>3v</sub> symmetry.
 </p>
 
+<h3>Learning target: Z-matrix ＆ dummy atom</h3><br /><br />
+<p class="h3">
+	<b>(1)</b> 啟動 Gaussview，建立一個 NH<sub>3</sub> 的分子，存為 nh3.gjf。<br />
+	<b>(2)</b> 打開 Results 中的 View File，輸入以下指令：<br />
 
+	<div class="commands">
+	%chk=nh3.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# opt freq hf/3-21g scfcyc=1000<br /><br />
+	Title Card Required<br /><br />
+	0 1<br />
+	<span class="cmds">
+	N<br />
+	X    1    1.0<br />
+	H    1    B    2    A<br />
+	H    1    B    2    A    3    120.0<br />
+	H    1    B    2    A    3    -120.0<br /><br />
+	B 1.07<br />
+	A 109.0<br />
+	</span><br /><br />
+	</div>
+</p>
+<p class="h3">
+	<b>(3)</b> 輸入完指令後，儲存再重新開啟 nh3.gjf 檔，即可看到以 dummy atom X 為基準點所建立出來的 z-matrix 座標。
+	<img src="./images/ex2/2-3.png"><br /><br />
+
+	<div class="commands">
+	介紹Z-matrix<br />
+	<span class="cmds">
+	N<br />
+	X    1    1.0<br />
+	H    1    B    2    A<br />
+	H    1    B    2    A    3    120.0<br />
+	H    1    B    2    A    3    -120.0<br /><br />
+	B 1.07<br />
+	A 109.0<br />
+	</span><br /><br />
+	</div><br />
+</p>
+<p class="h3">
+	<b>(4)</b> 利用 gaussian09 跑完 nh3.gjf 檔後，再利用 gaussview 打開 nh3.log 檔，在工具列 Results 選項中選擇 Summry，就可以得到 opt 後 C<sub>3V</sub> 對稱的 NH<sub>3</sub> 分子。<br />
+	<img src="./images/ex2/2-4.png"><br /><br />
+</p>
 <hr/>
 
 <!--EX.3-->
@@ -98,11 +208,11 @@
 <p class="h3">
 	<img src="./images/ex8/8-2.png"><br /><br />
 	
-	<div class="commands"><span class="cmts"># scan commands</span><br />
+	<div class="commands"><span class="cmts">scan commands</span><br />
 	<span class="cmds">opt=(modred,maxcyc=20)</span><br />
 	modred:<br />
 	maxcycle:<br /><br />
-	<span class="cmts"># scan parameters</span><br />
+	<span class="cmts">scan parameters</span><br />
     <span class="cmds">2 3 s 17 -0.1</span><br />
     以此題為例，要使兩個氫原子 scan 至氫分子鍵結，由於 SiH<sub>4</sub> 中 2 與 3 號兩個氫的距離為 2.42&Aring; 和氫分子的鍵長 0.74&Aring; 相差約 1.7&Aring; ，故選擇 2 與 3 號為要 scan 的原子，後面加 s 為做 scan 的指令，17 為 scan 的步數，-0.1 則為每次 scan -0.1&Aring; (因距離要越靠越近所以為負值)，其必為實數。<br />
     註：需在 GaussView 中開啟 label 才可在原子上看到對應的標號。<br /><br />
@@ -110,7 +220,7 @@
     scan distance:<br />
     scan angle:<br />
     scan dihedral angle:<br /><br />
-    <span class="cmts"># symmetry</span><br />
+    <span class="cmts">symmetry</span><br />
 	<span class="cmds">nosymm</span><br />
  	跑 scan 時，會打破結構對稱性，由於系統本身為對稱性結構，所以 scan 到某點時，job 會因須打破對稱性而無法完成 scan，因此需使用 nosymm (nosymmetry)。<br /><br />
     </div><br />
@@ -218,7 +328,8 @@ GAUSSIAN 09 USER'S REFERENCE
 <hr/>
 
 <h2>Changelog</h2>
-	<li class="changelog">2014/05/15 完成 Example 8</li>
+	<li class="changelog">2014/05/15 完成 Example 8 (補scan參數)</li>
+	<li class="changelog">2014/05/19 完成 Example 1 and 2 (補介紹Z-matrix)</li>	
 
 </body>
 </html>
