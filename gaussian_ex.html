@@ -139,7 +139,7 @@
 	<img src="./images/ex2/2-3.png"><br /><br />
 
 	<div class="commands">
-	介紹Z-matrix<br />
+	<span class="cmts">介紹 Z-matrix</span><br />
 	<span class="cmds">
 	N<br />
 	X    1    1.0<br />
@@ -155,24 +155,80 @@
 	<b>(4)</b> 利用 gaussian09 跑完 nh3.gjf 檔後，再利用 gaussview 打開 nh3.log 檔，在工具列 Results 選項中選擇 Summry，就可以得到 opt 後 C<sub>3V</sub> 對稱的 NH<sub>3</sub> 分子。<br />
 	<img src="./images/ex2/2-4.png"><br /><br />
 </p>
+<h3>Exercise: C<sub>6</sub>H<sub>6</sub> + HF，其中 HF 在不同的位向</h3>
+<p class="h3">
+	(1) H 指向中心<br />
+	(2) H 指向鍵中心<br />
+	(3) H 指向 C 原子<br /><br />
+</p>
 <hr/>
 
 <!--EX.3-->
 <a name="example_3"><h2>Example 3 - Interaction Energy</h2>
 <p class="h2">
-	Estimate the interaction energies of (H<sub>2</sub>O)<sub>2</sub> and (NH<sub>4</sub> - NH<sub>3</sub>)<sup>+</sup>. ( opt  ＆ CP )
+	Estimate the interaction energies of (H<sub>2</sub>O)<sub>2</sub> and (NH<sub>4</sub> - NH<sub>3</sub>)<sup>+</sup>.</p>
 
-
-</p>
-
-
+<h3>Learning target: opt ＆ counterpoise</h3><br /><br />
+<p class="h3">
+	<b>(1)</b> 以 (H<sub>2</sub>O)<sub>2</sub> 為例，啟動 Gaussview，在 file 開啟 new 的檔案，在上面建立兩個水分子，存為 h2o-h2o.gjf 檔。<br />
+	<b>(2)</b> 打開 Results 中的 View File，輸入以下指令。並在座標圖後面標示 1 與 2， counterpoise= 2 是讓其產生 ghost 原子，從而在同一 Basis Set 進行計算；後面標示 1 與  2 則是區別兩個水分子為不同的 monomer，注意的是，charge 和 multiplicity 要記得區分，第一組 0 1 為 ( H2O -H2O ) 的部分，第二組 0 1為 1 號 H2O 的部分，第三組 0 1 則為 2 號 H2O  的部分。</p>
+<div class="commands">
+	%chk=h2o-h2o.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# opt freq hf/3-21g <span class="cmds">counterpoise=2</span> scfcyc=1000<br /><br />
+	Title Card Required<br /><br />
+	<span class="cmds">0 1 0 1 0 1</span><br />
+	O    -1.51228400    -0.00148400    -0.11263600    <span class="cmds">1</span><br />
+	H    -0.53985600    -0.01263100    -0.05937000    <span class="cmds">1</span><br />
+	H    -1.85464700    0.01445900    0.79043800    <span class="cmds">1</span><br />
+	O    1.34425600    -0.00003800    0.05874100    <span class="cmds">2</span><br />
+	H    1.88015200    -0.77797400    -0.14232600    <span class="cmds">2</span><br />
+	H    1.85857500    0.78832500    -0.1575800    <span class="cmds">2</span><br /><br /><br />
+</div><br />
+<p class="h3">
+	<b>(3)</b> 丟到 gaussian09 去跑檔案，跑完後再用 Gaussview 開啟 h2o-h2o.log 檔，即得到 opt 後的結構，如下圖所示：<br />
+	<img src="./images/ex3/3-2.png"><br /><br />
+	<b>(4)</b> 另外，在工具列  Results 選項中選擇 View File，搜尋(ctrl+F) BSSE，就可發現 Counterpoise: corrected energy = -151.182 hartree 和 Counterpoise: BSSE energy = 0.00637 hartree，其中，interaction energy 即為 Counterpoise corrected energy = -151.182 hartree。<br />
+	<img src="./images/ex3/3-3.png"><br /><br />
+	<br /></p>
+	
+	<div class="commands">
+	<span class="cmts">介紹 BSSE (Basis Set Superposition Error)</span><br />
+	當計算不同系統時，各系統所使用的 basis set 可能不同，若需要將其考慮在同一系統，則必須校正選用不同 basis set 所造成之誤差。<br /><br />
+	<img src="./images/ex3/3-4.png"><br /><br />
+	(1) 上圖中紫色線為加入 CP (counterpoise) 指令的反應路徑，也就是在反應物 A 和 B 旁邊各 add 一個 ghost atom ( AB + BA → AB )，讓其大小看起來和產物差不多，增加  basis set 的準確性，以減少誤差；反之，則如紅色線未校正 ( A + B  → AB )。<br />
+	(2) BSSE 就是 basis set superposition errors，其誤差大小等於有考慮 CP 的反應路徑 ( AB + BA → AB ) 和無考慮 CP 的反應路徑 ( A + B → AB ) 之差，即為所求。
+	</div><br />
+<p class="h3">
+	<b>(5)</b> 同理，(NH<sub>4</sub> – NH<sub>3</sub>)<sup>+</sup>  的 interaction energy 做法如下圖，在 View File 地方輸入指令與其兩個 monomer的標示位置，注意的是，charge 和 multiplicity 要記得區分，第一組 1 1 為 (NH<sub>4</sub> – NH<sub>3</sub>)<sup>+</sup> 的部分，第二組 1 1 為 NH<sub>4</sub><sup>+</sup>  的部分，第三組 0 1 則為 NH<sub>3</sub> 的部分，最後進行存檔。<br />
+	<img src="./images/ex3/3-5.png"><br /><br />
+	<b>(6)</b> 丟到 gaussian09 跑完檔案後，打開 output 檔，在工具列 Results 選項中選擇 View File，就可以找到對於 (NH4 – NH3)+系統於的 Counterpoise: corrected energy = -112.159hartree 和 Counterpoise: BSSE energy = 0.00561 hartree。其中，(NH<sub>4</sub> – NH<sub>3</sub>)<sup>+</sup> 的 interaction energy 即為 Counterpoise: corrected energy = -112.159 hartree。<br />
+	<img src="./images/ex3/3-6.png"><br /><br /></p>
 <hr/>
 
 <!--EX.4-->
 
 <a name="example_4"><h2>Example 4 - Energy Barrier</h2>
+<p class="h2">
+	Find the rotational barrier of OH torsion of vinyl alcohol and ethanol.</p>
+<h3>Learning target: scan ＆ transision state</h3><br /><br />
+
+
+
+
+
+
+
+<hr/>
+
+<!--EX.5-->
 <a name="example_5"><h2>Example 5 - IR, Raman and NMR spectra</h2>
+
+<!--EX.6-->
 <a name="example_6"><h2>Example 6 - Equilibrium Constant</h2>
+
+<!--EX.7-->
 <a name="example_7"><h2>Example 7 - Proton Affinity</h2>
 
 <hr/>
@@ -330,6 +386,7 @@ GAUSSIAN 09 USER'S REFERENCE
 <h2>Changelog</h2>
 	<li class="changelog">2014/05/15 完成 Example 8 (補scan參數)</li>
 	<li class="changelog">2014/05/19 完成 Example 1 and 2 (補介紹Z-matrix)</li>	
+	<li class="changelog">2014/07/02 完成 Example 3</li>
 
 </body>
 </html>
