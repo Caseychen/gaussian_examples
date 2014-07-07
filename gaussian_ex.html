@@ -32,13 +32,13 @@
 	Prediction the energy difference between the HOMO and LUMO of ethylene and formaldehyde.
 </p>
 
-<h3>Learning target: opt, read output</h3><br /><br />
+<h3>Learning target: opt & read output</h3><br /><br />
 <p class="h3">
 	<b>(1)</b> 進入 Gaussview，分別將 ethylene 和 formaldehyde 建構出來，建成 ethylene.gjf 與 formaldehyde.gjf 檔。<br />
 	<img src="./images/ex1/1-1.png"><br /><br />
-	<b>(2)</b> 兩者的完整 gjf 檔分別如下，可對照下放圖示：<br />
+	<b>(2)</b> 兩者的完整 gjf 檔分別如下，可對照下方圖示：<br />
 	
-	<div class="commands">
+<div class="commands">
 	%chk=ethylene.chk<br />
 	%mem=6MW<br />
 	%nproc=1<br />
@@ -63,21 +63,19 @@
 	H    -0.28650837    -2.44409834    0.00000000<br />
 	H    -1.88967212    -1.51639342    0.00000000<br />
 	O    -0.19263169    0.42534307    0.00000000<br /><br /><br />
-	</div>
+</div>
 </p>
 <p class="h3">
 	<img src="./images/ex1/1-2.png"><br /><br />
 
-	<div class="commands"><span class="cmts">geometry optimization</span><br />
-	<span class="cmds"># opt</span><br />
-	對結構進行最佳化<br /><br />
-	<span class="cmts">frequency calculation</span><br />
-    <span class="cmds"># freq</span><br />
-    主要有三個目的 : <br />
+<div class="commands"><span class="cmts"># geometry optimization</span><br />
+	<span class="cmds">opt</span>: 	對結構進行最佳化<br /><br />
+	<span class="cmts"># frequency calculation</span><br />
+    <span class="cmds">freq</span> 主要有三個目的: <br />
     1. 看是否有負頻的存在<br />
     2. 可以顯現光譜<br />
     3. 可求熱力學參數<br />
-    </div><br />
+</div><br />
 </p>
 <p class="h3">
     <b>(3)</b> 然後啟動 gaussian09，分別開啟檔案 ethylene.gjf 與 formaldehyde.gjf 檔，對其進行 opt 和 freq 計算。<br />
@@ -111,7 +109,7 @@
 	Run a geometry optimization for NH<sub>3</sub> with C<sub>3v</sub> symmetry.
 </p>
 
-<h3>Learning target: Z-matrix ＆ dummy atom</h3><br /><br />
+<h3>Learning target: Z-matrix & dummy atom</h3><br /><br />
 <p class="h3">
 	<b>(1)</b> 啟動 Gaussview，建立一個 NH<sub>3</sub> 的分子，存為 nh3.gjf。<br />
 	<b>(2)</b> 打開 Results 中的 View File，輸入以下指令：<br />
@@ -168,10 +166,10 @@
 <p class="h2">
 	Estimate the interaction energies of (H<sub>2</sub>O)<sub>2</sub> and (NH<sub>4</sub> - NH<sub>3</sub>)<sup>+</sup>.</p>
 
-<h3>Learning target: opt ＆ counterpoise</h3><br /><br />
+<h3>Learning target: opt & counterpoise</h3><br /><br />
 <p class="h3">
 	<b>(1)</b> 以 (H<sub>2</sub>O)<sub>2</sub> 為例，啟動 Gaussview，在 file 開啟 new 的檔案，在上面建立兩個水分子，存為 h2o-h2o.gjf 檔。<br />
-	<b>(2)</b> 打開 Results 中的 View File，輸入以下指令。並在座標圖後面標示 1 與 2， counterpoise= 2 是讓其產生 ghost 原子，從而在同一 Basis Set 進行計算；後面標示 1 與  2 則是區別兩個水分子為不同的 monomer，注意的是，charge 和 multiplicity 要記得區分，第一組 0 1 為 ( H2O -H2O ) 的部分，第二組 0 1為 1 號 H2O 的部分，第三組 0 1 則為 2 號 H2O  的部分。</p>
+	<b>(2)</b> 打開 Results 中的 View File，輸入以下指令。並在座標圖後面標示 1 與 2， counterpoise= 2 是讓其產生 ghost 原子，從而在同一 Basis Set 進行計算；後面標示 1 與  2 則是區別兩個水分子為不同的 monomer，注意的是，charge 和 multiplicity 要記得區分，第一組 0 1 為 ( H<sub>2</sub>O - H<sub>2</sub>O ) 的部分，第二組 0 1為 1 號 H<sub>2</sub>O 的部分，第三組 0 1 則為 2 號 H<sub>2</sub>O 的部分。</p>
 <div class="commands">
 	%chk=h2o-h2o.chk<br />
 	%mem=6MW<br />
@@ -208,29 +206,193 @@
 <hr/>
 
 <!--EX.4-->
-
 <a name="example_4"><h2>Example 4 - Energy Barrier</h2>
 <p class="h2">
 	Find the rotational barrier of OH torsion of vinyl alcohol and ethanol.</p>
-<h3>Learning target: scan ＆ transision state</h3><br /><br />
+<h3>Learning target: scan & transition state</h3><br /><br />
+<p class="h3">
+	<b>(1)</b> 先對 vinyl alcohol (乙烯醇) 和 ethanol (乙醇)  進行optimize，左圖為 vinyl alcohol 的 opt 結構，右圖則為 ethanol 的 opt 結構。<br />
+	<b>(2)</b> 在 Gaussview 裡面的工具列中，選擇 save，另存一個新的檔案，以 vinyl alcohol 為例，存為 vinyl alcohol-s.gjf 檔，然後選擇 Results 中的 View File。<br />
+	<img src="./images/ex4/4-1.png"><br /><br />
+	<b>(3)</b> 指令欄輸入 scan 參數，如下所示：<br /></p>
+<div class="commands">
+	<span class="cmts"># input file (.gjf)</span><br />
+	%chk=vinyl alcohol-s.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# hf/3-21g <span class="cmds">opt=(modred, maxcyc=20)</span> scfcyc=1000<br /><br />
+	Title Card Required<br /><br />
+	0 1<br />
+	C    1.21677200    -0.18595400    -0.00010700<br />
+	H    1.27662900    -1.25511500    -0.00006400<br />
+	H    2.12749200    0.37608700    -0.00020000<br />
+	C    0.05416200    0.41899800    -0.00004200<br />
+	H    -0.02571100    -0.28719700    -0.00001900<br />
+	O    -1.13695600    -0.28719700    -0.00004200<br />
+	H    -1.90836500    0.28837100    0.00151700<br /><br />
+	<span class="cmds">7 6 4 1 s 36 10.0</span><br /><br /><br />
+	<br />
+	<span class="cmts"># scan commands</span><br /><br />
+	<span class="cmts"># scan parameters</span><br />
+	以此題為例，要算 dihedral angle 的 OH 之 torsion barrier，所以選擇 7 6 4 1 為要 scan 的原子，後面加 s 為做 scan 的指令，36 為 scan 的步數，10.0 則為每次 scan 10 度，其必為實數<br />
 
+</div><br />
+<p class="h3">
+	<b>(4)</b> 同理，ethanol 如下所示：<br />
+	<img src="./images/ex4/4-2.png"><br /><br /></p>
+<div class="commands">
+	<span class="cmts"># input file (.gjf)</span><br />
+	%chk=ethanol-s.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# hf/3-21g <span class="cmds">opt=(modred, maxcyc=20)</span> scfcyc=1000<br /><br />
+	Title Card Required<br /><br />
+	0 1<br />
+	C    1.21965100    -0.23344300    0.00004400<br />
+	H    1.25204800    -0.86551700    -0.87756100<br />
+	H    2.08189800    0.42306500    -0.00002500<br />
+	H    1.25205200    -0.86535700    0.87776400<br />
+	C    -0.07590500    0.56994300    -0.00004000<br />
+	H    -0.12222900    1.20514800    -0.87881700<br />
+	H    -0.12231500    1.20518300    0.87871000<br />
+	O    -1.14937600    -0.39583900    -0.00009800<br />
+	H    -2.00892200    0.04519100    0.00069200<br /><br />
+	<span class="cmds">9 8 5 1 s 36 10.0</span><br /><br /><br />
+</div><br />
+<p class="h3">
+	<b>(5)</b> 開啟 gaussian09，去跑 vinyl alcohol-s.gjf 和 ethanol-s.gjf 兩個scan 檔，跑完後再打開 Gaussview，選擇 Results 中的 Scan，即可看到 scan 後的 POTENTIAL BARRIERS 圖。<br />
+	<img src="./images/ex4/4-3.png"><br /><br />
+	<b>(6)</b> 建立過渡態的input file: 選擇 POTENTIAL CURVE 的最高點(極可能為過渡態存在的地方)，然候同樣 save，存成另一個名為 vinyl alcohol-ts.gjf 檔，再打開 Results 中的 view file，在 Route Section 的地方輸入以下指令，再按下 save，即完成建 TS 檔的動作。<br />
+<div class="commands">
+	<span class="cmts"># input file (.gjf)</span><br />
+	Route Section:
+	# hf/3-21g <span class="cmds">opt=(calcfc, ts, noeigen)</span> freq scfcyc=1000<br /><br />
 
-
-
-
-
-
+	<span class="cmts"># TS commands</span><br />
+	<span class="cmds">calcfc</span>: 為使從最高點產生兩個向下的VECTOR<br />
+	<span class="cmds">ts</span>: 為算過渡態的指令<br />
+	<span class="cmds">noeigen</span>: 則為在計算 TS 時，忽略許多負頻的存在和 HESS MATRIX，選擇一個最可能的負頻<br />
+</div><br />
+<p class="h3">
+	<b>(6)</b> 最後開啟 gaussian09，分別去跑 vinyl alcohol-ts.gjf 和ethanol-ts.gjf 檔，即可跑出 TS 的結構圖。按 results 裡面的  vibrations，就可顯示出負頻大小，並可看出它的振動方向。<br />
+	<img src="./images/ex4/4-7.png"><br /><br />
 <hr/>
 
 <!--EX.5-->
 <a name="example_5"><h2>Example 5 - IR, Raman and NMR spectra</h2>
+<p class="h2">
+	Calculate and assign the IR, Raman and NMR spectra of formic acid.</p>
+<h3>Learning target: freq=Raman & nmr=giao</h3><br /><br />
+<p class="h3">
+	<b>(1)</b> 利用 Gaussview 建立一個 formic acid (HCOOH) 的 model，再輸入 opt 和 freq 的指令，存成 formic acid.gjf 檔。<br /><br />
+	<b>(2)</b> 跑完檔案後，開啟 log 檔，選擇 results / vibration / spectrum，就可以得到 IR 和 Raman 的光譜。
+<div class="commands">
+	<span class="cmts"># hf method</span><br />
+	輸入 freq 的指令可同時得到 IR 和 Raman 光譜<br />
+	<span class="cmts"># DFT method</span><br />
+	只能得到 IR 光譜，必須打 freq = Raman 才可以得到 Raman 光譜
+</div><br />
+<p class="h3">
+	<img src="./images/ex5/5-2.png"><br /><br />
+	<b>(3)</b> 將 opt 後的檔案存成 formic acid-nmr.gjf 檔，在 Route Section 輸入 nmr = giao，然後再進行存檔動作。跑完 formic acid-nmr.gjf 檔後，打開 output 檔，再選擇 Results / NMR，就可以得到 NMR 的光譜圖。<br />
+<div class="commands">
+	<span class="cmts"># NMR calculation</span><br />
+	計算方法可大致分成下列三種：<br />
+	1. CSGT<br />
+	2. ALL<br />
+	3. GIAO，此為 gaussian 的內建值<br />
+</div><br />
+<p class="h3">
+	<img src="./images/ex5/5-3.png"><br /><br />
+<hr/>
 
 <!--EX.6-->
 <a name="example_6"><h2>Example 6 - Equilibrium Constant</h2>
+<p class="h2">
+	Predict the equilibrium constant of 2HCOOH → (HCOOH)<sub>2</sub><br />
+	Bonus: Predict equilibrium constant K(298.15K)=?, K(600.0K)=?<br />
+</p>
+<h3>Learning target: view log file & freq=readiso<br /><br /><br />Part 1 - equilibrium constant at 298.15K</h3>
+<p class="h3">
+	<b>(1)</b> 首先，建立甲酸 (HCOOH) 的 model，然後對其進行 optimize、freq。<br /><br />
+	<b>(2)</b> 打開 output 檔，選擇 Result / View File，對 zero-point 進行搜尋 (CTRL+F)，往下找幾行有熱力學參數，HCOOH 的 Sum of electronic and thermal Free Energies = -187.688228 hartree。<br />
+	<img src="./images/ex6/6-2.png"><br /><br />
+	<b>(3)</b> 再建立一個 (HCOOH)<sub>2</sub> 的系統，運用第三題 CP 的概念去進行計算，校正 BSSE。<br /><br />
+	<b>(4)</b> 跑完檔案後，打開 output 檔，選擇 Result / View File，找到 (HCOOH)<sub>2</sub> 的 Sum of electronic and thermal Free Energies = -375.383455 hartree。<br />
+	<img src="./images/ex6/6-4.png"><br /><br />
+	<b>(5)</b> 計算 delta G = -RTlnK → K = e<sup>-delta G/k<sub>b</sub>T</sup><br />
+	delta G = -375.383455 - (-187.688228*2) = -6.999 x 10<sup>-3</sup> hartree<br />
+	K(298.15K) = 1646.8<br /><br /><br />
+<h3>Part 2 - equilibrium constant at 600K</h3>
+<p class="h3">
+	<b>(1)</b> 同樣，將 HCOOH 的 output 檔存成 HCOOH-600.gjf 檔，選擇 Results / View File，然後輸入以下指令，注意格式需空行處。
+<div class="commands">
+	<span class="cmts"># input file (.gjf)</span><br />
+	%chk=HCOOH.chk<br />
+	%mem=6MW<br />
+	%nproc=1<br />
+	# hf/3-21g <span class="cmds">freq=readiso geom=check</span><br /><br />
+	Title Card Required<br /><br />
+	0 1<br /><br />
+	<span class="cmds">
+	600.0 1.0<br />
+	12<br />
+	1<br />
+	16<br />
+	16<br />
+	1<br />
+	</span><br /><br />
+
+	<span class="cmts"># freq=readiso</span><br />
+	readiso 提供不同環境下的條件，使之在計算時可以修改不同的溫度、壓力，甚至於同位素，input 檔下面欄位依序寫出欲計算的溫度壓力及各原子量(依照label)<br /><br />
+	<span class="vars">600.0</span> 表示溫度 600K<br />
+	<span class="vars">1.0</span> 表示壓力 1atm<br />
+	加上 12(C)、1(H)、16(O)、16(O)、1(H) 的原子量<br /><br />
+
+	<span class="cmts"># geom=check</span><br />
+	geometry read from checkpoint file<br />
+	chk 檔需保持原樣：%chk=HCOOH.chk<br />
+</div><br />
+<p class="h3">
+	<b>(2)</b> 同樣地，對 (HCOOH)<sub>2</sub> 這個系統進行相同的動作。<br />
+	<img src="./images/ex6/6-5.png"><br /><br />
+	<b>(3)</b> 打開 output 檔，選擇 Result / View File，搜尋 zero-point，發現溫度為 600 K 和壓力為 1atm。<br />
+	<img src="./images/ex6/6-6.png"><br /><br />
+	<b>(4)</b> 同時，我們可以發現 HCOOH 和 (HCOOH)<sub>2</sub> 的 Sum of electronic and thermal Free Energies 分別為 -187.718947 與 -375.440797 hartree。<br />
+	<img src="./images/ex6/6-7.png"><br /><br />
+	<b>(5)</b> 計算 delta G = -RTlnK → K = e<sup>-delta G/k<sub>b</sub>T</sup><br />
+	delta G = -375.440797 - (-187.718947*2) = -2.903 x 10<sup>-3</sup> hartree<br />
+	K(600.0K) = 4.60<br /><br /><br />
+	<b>討論：</b><br />
+	K(298.15K) = 1646.8<br />
+	K(600.0K) = 4.60<br />
+	因此，我們可以發現 HCOOH 分子高溫時易形成氣體分子，且高溫反應為吸熱，故其不易偶合化；反之，在低溫的時候，較易形成 dimer。<br /><br />
+<hr/>
 
 <!--EX.7-->
 <a name="example_7"><h2>Example 7 - Proton Affinity</h2>
+<p class="h2">
+	Predict the proton affinity of NH3 and H<sub>2</sub>O using G2MP2 method.<br />
+</p>
+<h3>Learning target: G2MP2<br /><br /><br /></h3>
+<p class="h3">
+	<b>(1)</b> 開啟 gaussianview，分別建立 NH<sub>3</sub> 和 NH<sub>4</sub><sup>+</sup> 的 model，然後使用 G2MP2 方法去進行 optimize 與 freq 的計算。<br />
 
+<div class="commands">
+	<span class="cmts"># G2MP2</span><br />	
+	1. 由於 G2MP2 方法已內建 opt、freq 指令與 basis set，所以無須輸入，只需在 Route Section 輸入 G2MP2 即可。<br />
+	2. G2MP2 方法是一種很昂貴的方法，計算時間長，但相對地，其準確性也越高。<br /> 
+</div><br />
+<p class="h3">
+	<img src="./images/ex7/7-1.png"><br /><br />
+	<b>(2)</b> 另外，建立 H<sup>+</sup> 的 model，但是其計算方法改用 hf，且只輸出入 freq 的計算即可 (單原子不需要 opt 的計算)。因為 H<sup>+</sup> 沒有電子，所以當使用 G2MP2 方法去計算的時候，會出現錯誤。<br /><br />
+	<b>(3)</b> 跑完檔案後，同時開啟這三個的 output 檔， 選擇 Result / View File，搜尋 zero-point，找到個別的熱力學參數。<br />
+	理論上，proton affinity = E<sub>NH<sub>3</sub></sub> + E<sub>H<sup>+</sup></sub> - E<sub>NH<sub>4</sub><sup>+</sup></sub>，但因為實驗部分多採用 H (enthalpy)，故 NH<sub>3</sub> 的 proton affinity = H<sub>NH<sub>3</sub></sub> + H<sub>H<sup>+</sup></sub> - H<sub>NH<sub>4</sub><sup>+</sup></sub> = 0.332501 hartree。<br />
+	<img src="./images/ex7/7-3.png"><br /><br />
+	<b>(4)</b> 同理，H<sub>2</sub>O 的做法也相同：開啟 gaussianview，分別建立 H<sub>2</sub>O 和 H<sub>3</sub>O<sup>+</sup> 的 model，然後使用 G2MP2 方法去進行 optimize 與 freq 的計算。<br />
+	<img src="./images/ex7/7-4.png"><br /><br />
+	<b>(5)</b> 跑完檔案後，同時開啟這三個的 output 檔，選擇 Result / View File 搜尋 zero-point，找到個別的熱力學參數；故 H<sub>2</sub>O 的 proton affinity= H<sub>H<sub>2</sub>O</sub> + H<sub>H<sup>+</sup></sub> - H<sub>H<sub>3</sub>O<sup>+</sup></sub> = 0.266533 hartree。<br />
+	<img src="./images/ex7/7-5.png"><br /><br /><br />
 <hr/>
 
 <!--EX.8-->
@@ -240,7 +402,7 @@
 	SiH<sub>4</sub> &rarr; SiH<sub>2</sub> + H<sub>2</sub><br />
 </p>
 
-<h3>Learning target: Scan, TS, QST2, QST3<br /><br /><br />Method 1 - Scan</h3>
+<h3>Learning target: Scan, TS, QST2 & QST3<br /><br /><br />Method 1 - Scan</h3>
 <p class="h3">
 	<b>(1)</b> 先計算 opt 及 freq 之 SiH<sub>4</sub>結構，作為 scan 的初始結構。<br />
 
@@ -386,7 +548,8 @@ GAUSSIAN 09 USER'S REFERENCE
 <h2>Changelog</h2>
 	<li class="changelog">2014/05/15 完成 Example 8 (補scan參數)</li>
 	<li class="changelog">2014/05/19 完成 Example 1 and 2 (補介紹Z-matrix)</li>	
-	<li class="changelog">2014/07/02 完成 Example 3</li>
+	<li class="changelog">2014/07/02 完成 Example 3 (補BSSE兩種算法)</li>
+	<li class="changelog">2014/07/07 完成 Example 4-7</li>
 
 </body>
 </html>
